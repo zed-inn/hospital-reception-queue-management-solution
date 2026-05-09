@@ -4,7 +4,10 @@ import { BaseVo } from "@vos/base.vo";
 import { EnumVo } from "@vos/enum.vo";
 import { NonEmptyString } from "@vos/non-empty-string.vo";
 import { PositiveIntegerVo } from "@vos/positive-integer.vo";
-import { PATIENT_PROFILE_STATUS } from "./patient-profile.constants";
+import {
+  PATIENT_PROFILE_STATUS,
+  PATIENT_PROFILE_TYPE,
+} from "./patient-profile.constants";
 import { TimezoneOffsetedDate } from "@vos/timezone-offseted-date.vo";
 
 export class PatientProfileId extends NonEmptyString<"PatientProfileId"> {
@@ -136,6 +139,21 @@ export class PatientProfileStatus extends EnumVo<
 
   static create(x: unknown) {
     return new PatientProfileStatus("PatientProfileStatus", this.validate(x));
+  }
+}
+
+export class PatientProfileType extends EnumVo<
+  "PatientProfileType",
+  PATIENT_PROFILE_TYPE
+> {
+  protected static override values = Object.values(PATIENT_PROFILE_TYPE);
+
+  protected static override validate(x: unknown) {
+    return super.validate(x) as PATIENT_PROFILE_TYPE;
+  }
+
+  static create(x: unknown) {
+    return new PatientProfileType("PatientProfileType", this.validate(x));
   }
 }
 

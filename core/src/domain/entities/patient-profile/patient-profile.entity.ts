@@ -1,5 +1,7 @@
-import { ValidationError } from "@errors/validation.error";
-import { PATIENT_PROFILE_STATUS } from "./patient-profile.constants";
+import {
+  PATIENT_PROFILE_STATUS,
+  PATIENT_PROFILE_TYPE,
+} from "./patient-profile.constants";
 import {
   PatientProfileId,
   PatientProfileName,
@@ -7,6 +9,7 @@ import {
   PatientProfileStatus,
   PatientProfileTicketedAt,
   PatientProfileTokenNumber,
+  PatientProfileType,
 } from "./patient-profile.vos";
 
 export class PatientProfile {
@@ -14,6 +17,7 @@ export class PatientProfile {
   private _name: PatientProfileName;
   private _phone: PatientProfilePhone;
   private _status: PatientProfileStatus;
+  private _type: PatientProfileType;
   private _tokenNumber: PatientProfileTokenNumber;
   private _ticketedAt: PatientProfileTicketedAt;
 
@@ -22,6 +26,7 @@ export class PatientProfile {
     name: string;
     phone: { number: string; countryCode: number };
     status: PATIENT_PROFILE_STATUS;
+    type: PATIENT_PROFILE_TYPE;
     tokenNumber: number;
     ticketedAt: Date;
   }) {
@@ -29,6 +34,7 @@ export class PatientProfile {
     this._name = PatientProfileName.create(params.name);
     this._phone = PatientProfilePhone.create(params.phone);
     this._status = PatientProfileStatus.create(params.status);
+    this._type = PatientProfileType.create(params.type);
     this._tokenNumber = PatientProfileTokenNumber.create(params.tokenNumber);
     this._ticketedAt = PatientProfileTicketedAt.create(params.ticketedAt);
   }
@@ -44,6 +50,9 @@ export class PatientProfile {
   }
   get status() {
     return this._status;
+  }
+  get type() {
+    return this._type;
   }
   get tokenNumber() {
     return this._tokenNumber;
@@ -65,7 +74,18 @@ export class PatientProfile {
     return this._status.equals(PATIENT_PROFILE_STATUS.RESOLVED);
   }
 
+  get isNormal() {
+    return this._type.equals(PATIENT_PROFILE_TYPE.NORMAL);
+  }
+  get isReturning() {
+    return this._type.equals(PATIENT_PROFILE_TYPE.RETURNING);
+  }
+
   setStatus(status: PATIENT_PROFILE_STATUS) {
     this._status = PatientProfileStatus.create(status);
+  }
+
+  setType(type: PATIENT_PROFILE_TYPE) {
+    this._type = PatientProfileType.create(type);
   }
 }

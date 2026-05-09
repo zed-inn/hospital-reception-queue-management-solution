@@ -1,4 +1,7 @@
-import { PATIENT_PROFILE_STATUS } from "@entities/patient-profile/patient-profile.constants";
+import {
+  PATIENT_PROFILE_STATUS,
+  PATIENT_PROFILE_TYPE,
+} from "@entities/patient-profile/patient-profile.constants";
 import { PatientProfile } from "@entities/patient-profile/patient-profile.entity";
 import { PatientProfileTokenNumber } from "@entities/patient-profile/patient-profile.vos";
 import { PatientQueue } from "@entities/patient-queue/patient-queue.entity";
@@ -8,6 +11,7 @@ import { PatientQueueRepository } from "@interfaces/repos/patient-queue-repo.int
 import { RepositoryUnitOfWork } from "@interfaces/unit-of-work/repo-uow.interface";
 import { IdGenerator } from "@interfaces/utils/id-generator.interface";
 import { LexoRank } from "@services/lexorank.service";
+import { PatientProfileAccessService } from "@services/patient-profile-access.service";
 import { QueueAccessService } from "@services/queue-access.service";
 
 export type AddNewPatientUseCaseParams = {
@@ -21,6 +25,7 @@ export class AddNewPatientUseCase {
   constructor(
     private readonly patientProfileRepository: PatientProfileRepository,
     private readonly patientQueueRepository: PatientQueueRepository,
+    private readonly patientProfileAccessService: PatientProfileAccessService,
     private readonly queueAccessService: QueueAccessService,
     private readonly repoUow: RepositoryUnitOfWork,
     private readonly idGen: IdGenerator,
@@ -38,6 +43,7 @@ export class AddNewPatientUseCase {
       name: params.name,
       phone: params.phone,
       status: PATIENT_PROFILE_STATUS.WAITING,
+      type: PATIENT_PROFILE_TYPE.NORMAL,
       ticketedAt: params.currentTimezoneOffsetedDate,
     });
 
@@ -57,15 +63,20 @@ export class AddNewPatientUseCase {
     });
   }
 
-  async getTokenNumber(queueId: QueueId) {
-    const lastPatientProfile =
+  private async getTokenNumber(queueId: QueueId) {
+    const lastPatientQueueProfile =
       await this.patientQueueRepository.getLastPatientInQueue(queueId);
-    if (!lastPatientProfile) return PatientProfileTokenNumber.start();
+    if (!lastPatientQueueProfile) return PatientProfileTokenNumber.start();
+
+    const lastPatientProfile =
+      await this.patientProfileAccessService.getPatientProfile(
+        lastPatientQueueProfile.patientProfileId.value,
+      );
 
     return lastPatientProfile.tokenNumber.next();
   }
 
-  async isQueueEmpty(queueId: QueueId) {
+  private async isQueueEmpty(queueId: QueueId) {
     const patientProfileCounts =
       await this.patientQueueRepository.countPatientsInQueue(queueId);
 

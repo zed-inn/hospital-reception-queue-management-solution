@@ -5,7 +5,7 @@ import { QueueId } from "@entities/queue/queue.vos";
 export class PatientQueue {
   private readonly _queueId: QueueId;
   private readonly _patientProfileId: PatientProfileId;
-  readonly _position: PatientQueuePosition;
+  private readonly _position: PatientQueuePosition;
 
   constructor(params: {
     queueId: string;
