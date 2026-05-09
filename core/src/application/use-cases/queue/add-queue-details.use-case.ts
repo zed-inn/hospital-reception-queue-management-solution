@@ -14,6 +14,7 @@ export class AddQueueDetailsUseCase {
   constructor(private readonly queueDetailsRepo: QueueDetailsRepository) {}
 
   async execute(params: AddQueueDetailsUseCaseParams) {
+    // TODO: check if queue account exists
     await this.checkQueueDetailsAlreadyFilled(params.id);
 
     const queue = new Queue({
