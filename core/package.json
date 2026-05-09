@@ -1,0 +1,20 @@
+{
+  "name": "flying-asteroid",
+  "version": "1.0.0",
+  "description": "flying-asteroid scaffolded with zed",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "build": "npm run clean && npx tsc -p tsconfig.json && npx tsc-alias",
+    "dev": "nodemon",
+    "start": "node dist/index.js"
+  },
+  "author": "zed-inn",
+  "license": "ISC",
+  "devDependencies": {
+    "tsc-alias": "^1.8.17",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}
