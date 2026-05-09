@@ -1,4 +1,7 @@
-export type DomainErrorType = "validation error" | "business rule violation";
+export type DomainErrorType =
+  | "validation error"
+  | "business rule violation"
+  | "not found error";
 
 export class DomainError<T = never> extends Error {
   override readonly name: string = "ERR_DOMAIN";

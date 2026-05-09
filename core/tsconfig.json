@@ -8,10 +8,11 @@
     "moduleResolution": "nodenext",
 
     "paths": {
-      "@errors/*": ["./src/domain/errors/*"],
+      "@errors/*": ["./src/domain/errors/*", "./src/application/errors/*"],
       "@vos/*": ["./src/domain/value-objects/*"],
       "@entities/*": ["./src/domain/entities/*"],
-      "@interfaces/*": ["./src/application/interfaces/*"]
+      "@interfaces/*": ["./src/application/interfaces/*"],
+      "@services/*": ["./src/domain/services/*", "./src/application/services/*"]
     },
     "esModuleInterop": true,
 
