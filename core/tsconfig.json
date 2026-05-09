@@ -10,7 +10,8 @@
     "paths": {
       "@errors/*": ["./src/domain/errors/*"],
       "@vos/*": ["./src/domain/value-objects/*"],
-      "@entities/*": ["./src/domain/entities/*"]
+      "@entities/*": ["./src/domain/entities/*"],
+      "@interfaces/*": ["./src/application/interfaces/*"]
     },
     "esModuleInterop": true,
 
