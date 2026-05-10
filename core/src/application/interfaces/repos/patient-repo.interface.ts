@@ -41,4 +41,9 @@ export interface PatientRepository {
     position: PatientPosition,
     ctx?: RepoUowCtx,
   ): Promise<Patient | null>;
+  getPositioned(
+    qId: QueueId,
+    limit: number,
+    ctx?: RepoUowCtx,
+  ): Promise<Patient[]>;
 }
