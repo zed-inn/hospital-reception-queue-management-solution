@@ -1,30 +1,38 @@
+import { PostgresConn } from "@db/postgres-connection";
 import { FastifyInstance } from "fastify";
 
 export class Server {
   private readonly app: FastifyInstance;
+  private readonly db: PostgresConn;
   private readonly host: string;
   private readonly port: number;
 
   constructor(params: {
     fastifyApp: FastifyInstance;
+    pgConnection: PostgresConn;
     host: string;
     port: number;
   }) {
     this.app = params.fastifyApp;
     this.host = params.host;
     this.port = params.port;
+    this.db = params.pgConnection;
 
     this.configureGracefulShutdown();
+    Object.freeze(this);
   }
 
   async gracefulShutdown(signal: string) {
     try {
-      this.app.log.info(`${signal} received. Starting graceful shutdown...`);
+      this.app.log.info(`${signal} received, starting graceful shutdown`);
+
+      await this.db.close();
+      this.app.log.info("Postgres connection closed");
 
       await this.app.close();
-      this.app.log.info("Fastify application closed.");
+      this.app.log.info("Fastify application closed");
 
-      this.app.log.info("Shutdown successful.");
+      this.app.log.info("Shutdown successful");
       process.exit(0);
     } catch (err) {
       console.log("Some error occured :", err);
@@ -34,6 +42,9 @@ export class Server {
 
   async start() {
     try {
+      await this.db.connect();
+      this.app.log.info("Postgres connection established");
+
       await this.app.listen({ port: this.port, host: this.host });
     } catch (error) {
       this.app.log.error(error);
@@ -41,7 +52,7 @@ export class Server {
     }
   }
 
-  configureGracefulShutdown() {
+  private configureGracefulShutdown() {
     process.on("SIGINT", () => this.gracefulShutdown("SIGINT"));
 
     process.on("SIGTERM", () => this.gracefulShutdown("SIGTERM"));
