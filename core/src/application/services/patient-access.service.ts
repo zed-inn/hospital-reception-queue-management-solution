@@ -57,4 +57,12 @@ export class PatientAccessService {
         message: "Patient has(d) not set to be returning patient",
       });
   }
+
+  ensureInConsultation(patient: Patient) {
+    if (!patient.isInConsultation)
+      throw new ValidationError({
+        name: "ERR_NOT_CONSULTING",
+        message: "Patient is not consulting",
+      });
+  }
 }
