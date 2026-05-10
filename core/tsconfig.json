@@ -12,7 +12,11 @@
       "@vos/*": ["./src/domain/value-objects/*"],
       "@entities/*": ["./src/domain/entities/*"],
       "@interfaces/*": ["./src/application/interfaces/*"],
-      "@services/*": ["./src/domain/services/*", "./src/application/services/*"]
+      "@services/*": [
+        "./src/domain/services/*",
+        "./src/application/services/*"
+      ],
+      "@use-cases/*": ["./src/application/use-cases/*"]
     },
     "esModuleInterop": true,
 
