@@ -1,7 +1,7 @@
 {
-  "name": "flying-asteroid",
+  "name": "hospital-reception-system",
   "version": "1.0.0",
-  "description": "flying-asteroid scaffolded with zed",
+  "description": "hospital-reception-system scaffolded with zed",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
