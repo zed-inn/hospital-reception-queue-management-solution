@@ -1,3 +1,9 @@
+export type { PatientRepository } from "@interfaces/repos/patient-repo.interface";
+export type { QueueAccountRepository } from "@interfaces/repos/queue-account-repo.interface";
+export type { QueueDetailsRepository } from "@interfaces/repos/queue-details-repo.interface";
+export type { RepositoryUnitOfWork } from "@interfaces/unit-of-work/repo-uow.interface";
+export type { IdGenerator } from "@interfaces/utils/id-generator.interface";
+
 import { PatientRepository } from "@interfaces/repos/patient-repo.interface";
 import { QueueAccountRepository } from "@interfaces/repos/queue-account-repo.interface";
 import { QueueDetailsRepository } from "@interfaces/repos/queue-details-repo.interface";
