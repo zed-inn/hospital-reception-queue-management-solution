@@ -5,26 +5,28 @@ import { EnumVo } from "@vos/enum.vo";
 import { NonEmptyString } from "@vos/non-empty-string.vo";
 import { PositiveIntegerVo } from "@vos/positive-integer.vo";
 import {
-  PATIENT_PROFILE_STATUS,
-  PATIENT_PROFILE_TYPE,
-} from "./patient-profile.constants";
+  PATIENT_POSITION_GAP,
+  PATIENT_STATUS,
+  PATIENT_TYPE,
+} from "./patient.constants";
 import { TimezoneOffsetedDate } from "@vos/timezone-offseted-date.vo";
+import { LexoRank } from "@services/lexorank.service";
 
-export class PatientProfileId extends NonEmptyString<"PatientProfileId"> {
+export class PatientId extends NonEmptyString<"PatientId"> {
   static create(x: unknown) {
-    return new PatientProfileId("PatientProfileId", this.validate(x));
+    return new PatientId("PatientId", this.validate(x));
   }
 }
 
-export class PatientProfileName extends NonEmptyString<"PatientProfileName"> {
+export class PatientName extends NonEmptyString<"PatientName"> {
   static create(x: unknown) {
-    return new PatientProfileName("PatientProfileName", this.validate(x));
+    return new PatientName("PatientName", this.validate(x));
   }
 }
 
 // -- Patient profile phone --
 
-export class PatientProfilePhoneNumber extends NonEmptyString<"PatientProfilePhoneNumber"> {
+export class PatientPhoneNumber extends NonEmptyString<"PatientPhoneNumber"> {
   protected static phoneRegex = /^\d{10}$/;
 
   protected static override validate(x: unknown) {
@@ -45,14 +47,11 @@ export class PatientProfilePhoneNumber extends NonEmptyString<"PatientProfilePho
   }
 
   static create(x: unknown) {
-    return new PatientProfilePhoneNumber(
-      "PatientProfilePhoneNumber",
-      this.validate(x),
-    );
+    return new PatientPhoneNumber("PatientPhoneNumber", this.validate(x));
   }
 }
 
-export class PatientProfilePhoneCountryCode extends PositiveIntegerVo<"PatientProfilePhoneCountryCode"> {
+export class PatientPhoneCountryCode extends PositiveIntegerVo<"PatientPhoneCountryCode"> {
   protected static override validate(x: unknown) {
     const validatedVal = super.validate(x);
 
@@ -71,18 +70,18 @@ export class PatientProfilePhoneCountryCode extends PositiveIntegerVo<"PatientPr
   }
 
   static create(x: unknown) {
-    return new PatientProfilePhoneCountryCode(
-      "PatientProfilePhoneCountryCode",
+    return new PatientPhoneCountryCode(
+      "PatientPhoneCountryCode",
       this.validate(x),
     );
   }
 }
 
-export class PatientProfilePhone extends BaseVo<
-  "PatientProfilePhone",
+export class PatientPhone extends BaseVo<
+  "PatientPhone",
   {
-    number: PatientProfilePhoneNumber;
-    countryCode: PatientProfilePhoneCountryCode;
+    number: PatientPhoneNumber;
+    countryCode: PatientPhoneCountryCode;
   }
 > {
   protected static validate(x: unknown) {
@@ -91,8 +90,8 @@ export class PatientProfilePhone extends BaseVo<
 
     const typeValidatedX = x as Record<string, unknown>;
 
-    const number = PatientProfilePhoneNumber.create(typeValidatedX["number"]);
-    const countryCode = PatientProfilePhoneCountryCode.create(
+    const number = PatientPhoneNumber.create(typeValidatedX["number"]);
+    const countryCode = PatientPhoneCountryCode.create(
       typeValidatedX["countryCode"],
     );
 
@@ -111,7 +110,7 @@ export class PatientProfilePhone extends BaseVo<
   }
 
   static create(x: unknown) {
-    return new PatientProfilePhone("PatientProfilePhone", this.validate(x));
+    return new PatientPhone("PatientPhone", this.validate(x));
   }
 
   get number() {
@@ -127,61 +126,71 @@ export class PatientProfilePhone extends BaseVo<
 
 // -- Patient profile phone --
 
-export class PatientProfileStatus extends EnumVo<
-  "PatientProfileStatus",
-  PATIENT_PROFILE_STATUS
-> {
-  protected static override values = Object.values(PATIENT_PROFILE_STATUS);
+export class PatientStatus extends EnumVo<"PatientStatus", PATIENT_STATUS> {
+  protected static override values = Object.values(PATIENT_STATUS);
 
   protected static override validate(x: unknown) {
-    return super.validate(x) as PATIENT_PROFILE_STATUS;
+    return super.validate(x) as PATIENT_STATUS;
   }
 
   static create(x: unknown) {
-    return new PatientProfileStatus("PatientProfileStatus", this.validate(x));
+    return new PatientStatus("PatientStatus", this.validate(x));
   }
 }
 
-export class PatientProfileType extends EnumVo<
-  "PatientProfileType",
-  PATIENT_PROFILE_TYPE
-> {
-  protected static override values = Object.values(PATIENT_PROFILE_TYPE);
+export class PatientType extends EnumVo<"PatientType", PATIENT_TYPE> {
+  protected static override values = Object.values(PATIENT_TYPE);
 
   protected static override validate(x: unknown) {
-    return super.validate(x) as PATIENT_PROFILE_TYPE;
+    return super.validate(x) as PATIENT_TYPE;
   }
 
   static create(x: unknown) {
-    return new PatientProfileType("PatientProfileType", this.validate(x));
+    return new PatientType("PatientType", this.validate(x));
   }
 }
 
-export class PatientProfileTokenNumber extends PositiveIntegerVo<"PatientProfileTokenNumber"> {
+export class PatientTokenNumber extends PositiveIntegerVo<"PatientTokenNumber"> {
   static create(x: unknown) {
-    return new PatientProfileTokenNumber(
-      "PatientProfileTokenNumber",
-      this.validate(x),
-    );
+    return new PatientTokenNumber("PatientTokenNumber", this.validate(x));
   }
 
   static start() {
-    return new PatientProfileTokenNumber("PatientProfileTokenNumber", 1);
+    return new PatientTokenNumber("PatientTokenNumber", 1);
   }
 
   next() {
-    return new PatientProfileTokenNumber(
-      "PatientProfileTokenNumber",
-      this._data + 1,
-    );
+    return new PatientTokenNumber("PatientTokenNumber", this._data + 1);
   }
 }
 
-export class PatientProfileTicketedAt extends TimezoneOffsetedDate<"PatientProfileTicketedAt"> {
+export class PatientTicketedAt extends TimezoneOffsetedDate<"PatientTicketedAt"> {
   static create(x: unknown) {
-    return new PatientProfileTicketedAt(
-      "PatientProfileTicketedAt",
-      this.validate(x),
-    );
+    return new PatientTicketedAt("PatientTicketedAt", this.validate(x));
+  }
+}
+
+export class PatientPosition extends NonEmptyString<"PatientPosition"> {
+  static create(x: unknown) {
+    return new PatientPosition("PatientPosition", this.validate(x));
+  }
+
+  add(x: number) {
+    const newPos = LexoRank.add(this._data, x);
+    return new PatientPosition("PatientPosition", newPos);
+  }
+
+  subtract(x: number) {
+    const newPos = LexoRank.subtract(this._data, x);
+    return new PatientPosition("PatientPosition", newPos);
+  }
+
+  next() {
+    return this.add(PATIENT_POSITION_GAP);
+  }
+
+  static start() {
+    const pos = LexoRank.add(LexoRank.min, PATIENT_POSITION_GAP);
+    return new PatientPosition("PatientPosition", pos);
   }
 }
