@@ -8,15 +8,8 @@
     "moduleResolution": "nodenext",
 
     "paths": {
-      "@errors/*": ["./src/domain/errors/*", "./src/application/errors/*"],
-      "@vos/*": ["./src/domain/value-objects/*"],
-      "@entities/*": ["./src/domain/entities/*"],
-      "@interfaces/*": ["./src/application/interfaces/*"],
-      "@services/*": [
-        "./src/domain/services/*",
-        "./src/application/services/*"
-      ],
-      "@use-cases/*": ["./src/application/use-cases/*"]
+      "@config/*": ["./src/config/*"],
+      "@infra/*": ["./src/shared/infra/*"]
     },
     "esModuleInterop": true,
 
@@ -35,9 +28,8 @@
     "isolatedModules": true,
 
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-
-    "composite": true
+    "skipLibCheck": true
   },
+  "references": [{ "path": "../../core" }],
   "include": ["src"]
 }
