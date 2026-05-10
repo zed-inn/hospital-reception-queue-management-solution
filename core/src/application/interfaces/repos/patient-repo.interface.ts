@@ -46,4 +46,9 @@ export interface PatientRepository {
     limit: number,
     ctx?: RepoUowCtx,
   ): Promise<Patient[]>;
+  countPositionBeforePosition(
+    qId: QueueId,
+    position: PatientPosition,
+    ctx?: RepoUowCtx,
+  ): Promise<number>;
 }
