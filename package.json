@@ -1,5 +1,11 @@
 {
   "name": "hospital-queue-management-system",
+  "scripts": {
+    "build-core": "cd core/ && npm run build",
+    "build-nodejs-backend": "cd apps/nodejs-backend/ && npm run build",
+    "build": "npm run build-core && npm run build-nodejs-backend",
+    "dev": "cd apps/nodejs-backend/ && npm run dev"
+  },
   "workspaces": [
     "apps/*",
     "core/"
