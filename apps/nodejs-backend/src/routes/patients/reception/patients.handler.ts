@@ -1,9 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import {
   AddNewPatientBody,
-  AddNewPatientParams,
   AddReturningPatientParams,
-  GetPatientsParams,
   GetPatientsQuery,
   NextPatientParams,
 } from "./patients.schema";
@@ -14,17 +12,14 @@ import { PatientRowCamel } from "@db/table-row-types";
 
 export class PatientsHandler {
   static async getPatientsInQueue(
-    req: FastifyRequest<{
-      Querystring: GetPatientsQuery;
-      Params: GetPatientsParams;
-    }>,
+    req: FastifyRequest<{ Querystring: GetPatientsQuery }>,
     reply: FastifyReply,
   ) {
-    const query = req.query,
-      params = req.params;
+    const queue = req.user as AuthUserPayload;
+    const query = req.query;
 
     const result = await Reception.getPatientsInQueue.execute({
-      queueId: params.queueId,
+      queueId: queue.id,
       ...(query.limit ? { limit: query.limit } : {}),
     });
 
@@ -37,20 +32,17 @@ export class PatientsHandler {
   }
 
   static async addNewPatient(
-    req: FastifyRequest<{
-      Params: AddNewPatientParams;
-      Body: AddNewPatientBody;
-    }>,
+    req: FastifyRequest<{ Body: AddNewPatientBody }>,
     reply: FastifyReply,
   ) {
-    const params = req.params,
-      body = req.body;
+    const queue = req.user as AuthUserPayload;
+    const body = req.body;
 
     const currentTimezoneOffsetedDate = DateTime.fromJSDate(new Date(), {
       zone: body.timeZone,
     }).toJSDate();
     const result = (await Reception.addNewPatient.execute({
-      queueId: params.queueId,
+      queueId: queue.id,
       name: body.name,
       phone: body.phone,
       currentTimezoneOffsetedDate,
@@ -63,11 +55,13 @@ export class PatientsHandler {
     req: FastifyRequest<{ Params: AddReturningPatientParams }>,
     reply: FastifyReply,
   ) {
+    const queue = req.user as AuthUserPayload;
     const params = req.params;
 
-    const result = (await Reception.addReturningPatient.execute(
-      params,
-    )) as PatientRowCamel;
+    const result = (await Reception.addReturningPatient.execute({
+      queueId: queue.id,
+      tokenNumber: params.tokenNumber,
+    })) as PatientRowCamel;
 
     return reply.code(200);
   }
@@ -76,10 +70,12 @@ export class PatientsHandler {
     req: FastifyRequest<{ Params: NextPatientParams }>,
     reply: FastifyReply,
   ) {
+    const queue = req.user as AuthUserPayload;
     const params = req.params;
 
     const result = await Reception.nextPatient.execute({
-      ...params,
+      queueId: queue.id,
+      patientId: params.patientId,
       resolved: false,
     });
 
@@ -90,10 +86,12 @@ export class PatientsHandler {
     req: FastifyRequest<{ Params: NextPatientParams }>,
     reply: FastifyReply,
   ) {
+    const queue = req.user as AuthUserPayload;
     const params = req.params;
 
     const result = await Reception.nextPatient.execute({
-      ...params,
+      queueId: queue.id,
+      patientId: params.patientId,
       resolved: true,
     });
 
