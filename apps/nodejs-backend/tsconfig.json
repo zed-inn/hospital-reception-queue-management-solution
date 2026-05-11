@@ -13,7 +13,8 @@
       "@db/*": ["./src/shared/db/*", "./src/shared/sql/*"],
       "@implementations/*": ["./src/interface-implementations/*"],
       "@routes/*": ["./src/routes/*"],
-      "@hooks/*": ["./src/shared/hooks/*"]
+      "@hooks/*": ["./src/shared/hooks/*"],
+      "@utils/*": ["./src/shared/utils/*"]
     },
     "esModuleInterop": true,
 
