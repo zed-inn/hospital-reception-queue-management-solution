@@ -3,25 +3,23 @@ import { FastifyInstance } from "fastify";
 
 export class Server {
   private readonly app: FastifyInstance;
-  private readonly appRoutes: ZodFastifyRouter;
   private readonly db: PostgresConn;
   private readonly host: string;
   private readonly port: number;
 
   constructor(params: {
     fastifyApp: FastifyInstance;
-    fastifyRouter: ZodFastifyRouter;
+    fastifyRouter?: ZodFastifyRouter;
     pgConnection: PostgresConn;
     host: string;
     port: number;
   }) {
     this.app = params.fastifyApp;
-    this.appRoutes = params.fastifyRouter;
     this.host = params.host;
     this.port = params.port;
     this.db = params.pgConnection;
 
-    this.app.register(this.appRoutes);
+    if (params.fastifyRouter) this.app.register(params.fastifyRouter);
 
     this.configureGracefulShutdown();
     Object.freeze(this);
