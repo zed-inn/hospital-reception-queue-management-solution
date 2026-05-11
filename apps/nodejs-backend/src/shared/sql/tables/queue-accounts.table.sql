@@ -1,7 +1,6 @@
 CREATE TABLE IF NOT EXISTS queue_accounts (
     id UUID PRIMARY KEY REFERENCES queue_accounts(id) ON DELETE CASCADE,
     email TEXT NOT NULL CHECK (char_length(email) > 3),
-    password_hash TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL

@@ -1,6 +1,6 @@
 import { PostgresRepository } from "@db/postgres-repo";
 import { PatientRowMapper } from "@db/table-row-mapper";
-import { PatientRow } from "@db/table-row-types";
+import { PatientRow, PatientRowCamel } from "@db/table-row-types";
 import {
   Patient,
   PATIENT_TYPE,
@@ -46,6 +46,18 @@ export class PostgresPatientRepository
       updated_at: updatedAt ?? patient.ticketedAt.value,
       deleted_at: null,
     };
+  }
+
+  private toCamel(row: PatientRow): PatientRowCamel {
+    return PatientRow.parse({
+      ...row,
+      queueId: row.queue_id,
+      phone: { number: row.phone.number, countryCode: row.phone.country_code },
+      tokenNumber: row.token_number,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      deletedAt: row.deleted_at,
+    });
   }
 
   async existsById(id: PatientId, ctx?: RepoUowCtx): Promise<boolean> {
@@ -210,7 +222,7 @@ export class PostgresPatientRepository
         ],
       );
 
-      return result.rows[0] as PatientRow;
+      return this.toCamel(result.rows[0] as PatientRow);
     } else {
       const result = await this.withCtx(ctx).query(
         "UPDATE patients SET queue_id = $1, name = $2, phone = $3, status = $4, type = $5, position = $6, token_number = $7, created_at = $8, updated_at = $9, deleted_at = $10 WHERE id = $10 RETURNING *",
@@ -229,7 +241,7 @@ export class PostgresPatientRepository
         ],
       );
 
-      return result.rows[0] as PatientRow;
+      return this.toCamel(result.rows[0] as PatientRow);
     }
   }
 }

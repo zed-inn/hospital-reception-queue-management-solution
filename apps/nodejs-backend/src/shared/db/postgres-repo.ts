@@ -1,4 +1,5 @@
 import { Pool, PoolClient } from "pg";
+import { unknown } from "zod";
 
 export class PostgresRepository<Row extends Record<string, unknown>> {
   protected readonly pool: Pool | PoolClient;

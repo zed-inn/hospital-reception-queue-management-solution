@@ -1,6 +1,6 @@
 import { PostgresRepository } from "@db/postgres-repo";
 import { QueueRowMapper } from "@db/table-row-mapper";
-import { QueueDetailRow } from "@db/table-row-types";
+import { QueueDetailRow, QueueDetailRowCamel } from "@db/table-row-types";
 import {
   Queue,
   QueueDetailsRepository,
@@ -34,6 +34,15 @@ export class PostgresQueueDetailsRepository
       updated_at: updatedAt ?? createdAt,
       deleted_at: null,
     };
+  }
+
+  private toCamel(row: QueueDetailRow): QueueDetailRowCamel {
+    return QueueDetailRow.parse({
+      ...row,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      deletedAt: row.deleted_at,
+    });
   }
 
   async existsById(id: QueueId, ctx?: RepoUowCtx): Promise<boolean> {
@@ -71,14 +80,14 @@ export class PostgresQueueDetailsRepository
         ],
       );
 
-      return this.toQueue(result.rows[0] as QueueDetailRow);
+      return this.toCamel(result.rows[0] as QueueDetailRow);
     } else {
       const result = await this.withCtx(ctx).query(
         "UPDATE queue_details SET name = $1, type = $2, status = $3, updated_at = $4 WHERE id = $5 RETURNING *",
         [row.name, row.type, row.status, row.updated_at, row.id],
       );
 
-      return this.toQueue(result.rows[0] as QueueDetailRow);
+      return this.toCamel(result.rows[0] as QueueDetailRow);
     }
   }
 }
