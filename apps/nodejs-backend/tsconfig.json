@@ -11,7 +11,8 @@
       "@config/*": ["./src/config/*"],
       "@infra/*": ["./src/shared/infra/*"],
       "@db/*": ["./src/shared/db/*", "./src/shared/sql/*"],
-      "@implementations/*": ["./src/interface-implementations/*"]
+      "@implementations/*": ["./src/interface-implementations/*"],
+      "@routes/*": ["./src/routes/*"]
     },
     "esModuleInterop": true,
 
