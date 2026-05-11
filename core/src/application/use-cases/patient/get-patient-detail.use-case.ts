@@ -1,5 +1,3 @@
-import { Patient } from "@entities/patient-profile/patient.entity";
-import { PatientId } from "@entities/patient-profile/patient.vos";
 import { PatientRepository } from "@interfaces/repos/patient-repo.interface";
 import { PatientAccessService } from "@services/patient-access.service";
 import { QueueAccessService } from "@services/queue-access.service";

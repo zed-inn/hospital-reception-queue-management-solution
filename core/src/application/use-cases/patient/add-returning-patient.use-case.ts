@@ -2,7 +2,6 @@ import { Patient } from "@entities/patient-profile/patient.entity";
 import { PatientPosition } from "@entities/patient-profile/patient.vos";
 import { QueueId } from "@entities/queue/queue.vos";
 import { PatientRepository } from "@interfaces/repos/patient-repo.interface";
-import { RepositoryUnitOfWork } from "@interfaces/unit-of-work/repo-uow.interface";
 import { LexoRank } from "@services/lexorank.service";
 import { PatientAccessService } from "@services/patient-access.service";
 import { QueueAccessService } from "@services/queue-access.service";
@@ -17,7 +16,6 @@ export class AddReturningPatientUseCase {
     private readonly patientRepository: PatientRepository,
     private readonly patientAccessRepository: PatientAccessService,
     private readonly queueAccessService: QueueAccessService,
-    private readonly repoUow: RepositoryUnitOfWork,
   ) {}
 
   async execute(params: AddReturningPatientUseCaseParams) {
