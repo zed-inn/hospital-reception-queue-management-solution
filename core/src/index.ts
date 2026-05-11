@@ -4,6 +4,38 @@ export type { QueueDetailsRepository } from "@interfaces/repos/queue-details-rep
 export type { RepositoryUnitOfWork } from "@interfaces/unit-of-work/repo-uow.interface";
 export type { IdGenerator } from "@interfaces/utils/id-generator.interface";
 
+export {
+  PatientId,
+  PatientName,
+  PatientPhone,
+  PatientPhoneCountryCode,
+  PatientPhoneNumber,
+  PatientPosition,
+  PatientStatus,
+  PatientTicketedAt,
+  PatientTokenNumber,
+  PatientType,
+} from "@entities/patient-profile/patient.vos";
+export {
+  QueueId,
+  QueueName,
+  QueueStatus,
+  QueueType,
+} from "@entities/queue/queue.vos";
+
+export { Patient } from "@entities/patient-profile/patient.entity";
+export { Queue } from "@entities/queue/queue.entity";
+
+export {
+  PATIENT_STATUS,
+  PATIENT_TYPE,
+} from "@entities/patient-profile/patient.constants";
+export { QUEUE_STATUS, QUEUE_TYPE } from "@entities/queue/queue.constants";
+
+export type { RepoUowCtx } from "@interfaces/unit-of-work/repo-uow.interface";
+
+export { DomainError } from "@errors/domain.error";
+
 import { PatientRepository } from "@interfaces/repos/patient-repo.interface";
 import { QueueAccountRepository } from "@interfaces/repos/queue-account-repo.interface";
 import { QueueDetailsRepository } from "@interfaces/repos/queue-details-repo.interface";

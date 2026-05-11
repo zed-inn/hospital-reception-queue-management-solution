@@ -5,5 +5,5 @@ import { RepoUowCtx } from "@interfaces/unit-of-work/repo-uow.interface";
 export interface QueueDetailsRepository {
   getById(id: QueueId, ctx?: RepoUowCtx): Promise<Queue | null>;
   existsById(id: QueueId, ctx?: RepoUowCtx): Promise<boolean>;
-  save<T>(q: Queue, ctx?: RepoUowCtx): Promise<T>;
+  save(q: Queue, ctx?: RepoUowCtx): Promise<unknown>;
 }

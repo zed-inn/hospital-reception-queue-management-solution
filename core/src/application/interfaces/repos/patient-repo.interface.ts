@@ -15,10 +15,9 @@ export interface PatientRepository {
     tokenNum: PatientTokenNumber,
     ctx?: RepoUowCtx,
   ): Promise<Patient | null>;
-  save<T>(patient: Patient, ctx?: RepoUowCtx): Promise<T>;
+  save(patient: Patient, ctx?: RepoUowCtx): Promise<unknown>;
 
-  getLastInQueue(qid: QueueId, ctx?: RepoUowCtx): Promise<Patient | null>;
-
+  getLastInQueue(qId: QueueId, ctx?: RepoUowCtx): Promise<Patient | null>;
   getLastByPositionInQueue(
     qId: QueueId,
     ctx?: RepoUowCtx,

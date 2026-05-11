@@ -10,7 +10,7 @@
     "paths": {
       "@config/*": ["./src/config/*"],
       "@infra/*": ["./src/shared/infra/*"],
-      "@db/*": ["./src/shared/db/*"]
+      "@db/*": ["./src/shared/db/*", "./src/shared/sql/*"]
     },
     "esModuleInterop": true,
 
