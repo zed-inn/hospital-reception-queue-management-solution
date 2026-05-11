@@ -1,4 +1,5 @@
 import fastifyCookie from "@fastify/cookie";
+import fastifyJwt from "@fastify/jwt";
 import {
   serializerCompiler,
   validatorCompiler,
@@ -14,8 +15,7 @@ const app = fastify({
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
-app.decorateRequest("user", undefined);
-
 app.register(fastifyCookie);
+app.register(fastifyJwt, { secret: env.JWT_SECRET });
 
 export default app;

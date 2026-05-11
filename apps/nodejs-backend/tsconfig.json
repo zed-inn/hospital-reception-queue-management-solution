@@ -12,7 +12,8 @@
       "@infra/*": ["./src/shared/infra/*"],
       "@db/*": ["./src/shared/db/*", "./src/shared/sql/*"],
       "@implementations/*": ["./src/interface-implementations/*"],
-      "@routes/*": ["./src/routes/*"]
+      "@routes/*": ["./src/routes/*"],
+      "@hooks/*": ["./src/shared/hooks/*"]
     },
     "esModuleInterop": true,
 

@@ -12,6 +12,10 @@ const envSchema = z.object({
   PG_USER: z.string().trim().min(1).default("postgres"),
   PG_PASSWORD: z.string(),
   PG_DATABASE: z.string().trim().min(1),
+  JWT_SECRET: z.string().default("secret"),
+  OAUTH_GOOGLE_CLIENT_ID: z.string().trim().min(1),
+  OAUTH_GOOGLE_CLIENT_SECRET: z.string().trim().min(1),
+  OAUTH_GOOGLE_REDIRECT_URI: z.string().trim().min(1).default("/login/google"),
 });
 
 export const env = envSchema.parse(process.env);
