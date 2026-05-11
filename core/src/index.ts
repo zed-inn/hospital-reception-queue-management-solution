@@ -86,7 +86,6 @@ export class Application {
       patientRepository,
       this.patientAccessService,
       this.queueAccessService,
-      repositoryUnitOfWork,
     );
 
     this.getPatientDetail = new GetPatientDetailUseCase(
